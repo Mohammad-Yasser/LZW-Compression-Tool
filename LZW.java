@@ -7,38 +7,39 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Scanner;
+
 import javax.swing.JOptionPane;
 
 
 
 public class LZW {
 	public static void compress(String str, HashMap<String, Integer> dictionary, BufferedWriter output) throws IOException {
-		String s = "";
+		String current = "";
 
 		for (int i = 0; i < str.length(); ++i) {
-			if (!dictionary.containsKey(s + str.charAt(i))) {
-				output.write(dictionary.get(s));
-				dictionary.put(s + str.charAt(i), dictionary.size());
-				s = "";
+			if (!dictionary.containsKey(current + str.charAt(i))) {
+				output.write(dictionary.get(current));
+				dictionary.put(current + str.charAt(i), dictionary.size());
+				current = "";
 			}
 
-			s += str.charAt(i);
+			current += str.charAt(i);
 		}
 
-		output.write(dictionary.get(s));
+		output.write(dictionary.get(current));
 	}
 
 	public static void decompress(String dictionary[], PrintWriter output, BufferedReader input) throws IOException {
 
 		int currentCode, previousCode = 0, currentSize = 127;
 		while ((currentCode = input.read()) != -1) {
-			String s = dictionary[currentCode];
-			if (s == null)
-				s = dictionary[currentSize] = dictionary[previousCode] + dictionary[previousCode].charAt(0);
+			String str = dictionary[currentCode];
+			if (str == null)
+				str = dictionary[currentSize] = dictionary[previousCode] + dictionary[previousCode].charAt(0);
 
 			dictionary[currentSize++] = dictionary[previousCode] + dictionary[currentCode].charAt(0);
 
-			output.write(s);
+			output.write(str);
 
 			previousCode = currentCode;
 		}
