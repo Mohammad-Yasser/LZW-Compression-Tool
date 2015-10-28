@@ -45,7 +45,7 @@ public class LZW {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Integer choice = Integer.parseInt(JOptionPane.showInputDialog("Select your choice:\n1-Compress\n2-Decompress"));
+		int choice = Integer.parseInt(JOptionPane.showInputDialog("Select your choice:\n1-Compress\n2-Decompress"));
 
 		if (choice == 1) {
 			HashMap<String, Integer> dictionary = new HashMap<String, Integer>();
